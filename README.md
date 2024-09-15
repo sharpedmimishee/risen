@@ -1,5 +1,5 @@
 # 🌅 Risen License generator
-![Console Image](https://raw.githubusercontent.com/mimisheesharp/risen/images/risen.png "console image")
+
 
 I made this because it was a hassle to have to open a browser every time to create a license file.  
 Risen currently only supports the MIT license.
