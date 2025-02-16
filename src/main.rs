@@ -1,9 +1,9 @@
 use std::env;
-use std::fs::File;
 use std::io::{stdin, stdout, Write};
+mod licenses;
 
 fn license() {
-    let licenses: Vec<&str> = vec!["mit"];
+    let licenses: Vec<&str> = vec!["mit", "defec"];
 
     println!("License Generator");
     println!("What license do you want?");
@@ -22,42 +22,10 @@ fn license() {
             license()
         }
         "mit" => {
-            print!("your name: ");
-            let _ = stdout().flush();
-            let mut name: String = String::new();
-            let _ = stdin().read_line(&mut name);
-            print!("project year: ");
-            let _ = stdout().flush();
-            let mut year = String::new();
-            let _ = stdin().read_line(&mut year);
-            println!("Generating a mit license...");
-            let license = File::create("LICENSE");
-            let txt = format!(
-                r#"MIT License
-
-Copyright (c) {} {}
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-"#,
-                year.trim(), name.trim()
-            );
-            let _ = license.expect("error").write_all(txt.as_bytes());
+            licenses::mit::gen();
+        }
+        "defec" => {
+            licenses::defec::gen();
         }
         _ => {
             println!("\x1b[31mThe license you entered has not been added yet.");
@@ -70,7 +38,7 @@ fn main() {
     println!("Risen version: \x1b[35m{}\x1b[m", version);
     let args: Vec<String> = env::args().collect();
     if args.len() == 2 {
-        let gen_type: String = args[1].to_ascii_lowercase(); //.to_ascii_lowercase(): 大文字があったら小文字にする
+        let gen_type: String = args[1].to_ascii_lowercase();
         if &gen_type == "license" {
             license()
         } else {

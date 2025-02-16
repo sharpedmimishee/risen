@@ -1,6 +1,21 @@
-MIT License
+use std::fs::File;
+use std::io::{stdout, stdin, Write};
 
-Copyright (c) 2025 sharpedmimishee
+pub fn gen() {
+print!("your name: ");
+            let _ = stdout().flush();
+            let mut name: String = String::new();
+            let _ = stdin().read_line(&mut name);
+            print!("project year: ");
+            let _ = stdout().flush();
+            let mut year = String::new();
+            let _ = stdin().read_line(&mut year);
+            println!("Generating a license...");
+            let license = File::create("LICENSE");
+            let txt = format!(
+                r#"MIT License
+
+Copyright (c) {} {}
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +34,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+"#,
+                year.trim(), name.trim()
+            );
+            let _ = license.expect("error").write_all(txt.as_bytes());       
+}
